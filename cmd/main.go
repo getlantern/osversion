@@ -9,13 +9,13 @@ import (
 func main() {
 	str, err := osversion.GetString()
 	if err != nil {
-		log.Fatal("Error getting OS version")
+		log.Fatalf("Error getting OS version: %v", err)
 	}
 	log.Println(str)
 
 	version, err := osversion.GetSemanticVersion()
 	if err != nil {
-		log.Fatal("Error getting OS version")
+		log.Fatalf("Error getting OS version: %v", err)
 	}
 
 	log.Println(version)

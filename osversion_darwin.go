@@ -1,14 +1,13 @@
 package osversion
 
 /*
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
+#include <string.h>
 #include <sys/sysctl.h>
 
-int darwin_get_os(char* str) {
-    //char str[256];
-    size_t size = sizeof(str);
+int darwin_get_os(char* str, size_t size) {
     return sysctlbyname("kern.osrelease", str, &size, NULL, 0);
 }
 */
@@ -22,11 +21,11 @@ import (
 )
 
 func GetString() (string, error) {
-	bufferSize := 256
-	str := (*C.char)(C.malloc(C.size_t(bufferSize)))
+	bufferSize := C.size_t(256)
+	str := (*C.char)(C.malloc(bufferSize))
 	defer C.free(unsafe.Pointer(str))
 
-	err := C.darwin_get_os(str)
+	err := C.darwin_get_os(str, bufferSize)
 	if err == -1 {
 		return "", errors.New("Error running sysctl")
 	}
