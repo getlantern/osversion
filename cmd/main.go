@@ -19,4 +19,11 @@ func main() {
 	}
 
 	log.Println(version)
+
+	hstr, err := osversion.GetHumanReadable()
+	if err != nil {
+		log.Fatalf("Error getting OS version: %v", err)
+	}
+
+	log.Println(hstr)
 }

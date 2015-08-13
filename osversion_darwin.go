@@ -15,6 +15,8 @@ import "C"
 
 import (
 	"errors"
+	"strconv"
+	"strings"
 	"unsafe"
 
 	"github.com/blang/semver"
@@ -33,22 +35,42 @@ func GetString() (string, error) {
 }
 
 func GetSemanticVersion() (semver.Version, error) {
-
-	// 14.x.x  OS X 10.10.x Yosemite
-	// 13.x.x  OS X 10.9.x Mavericks
-	// 12.x.x  OS X 10.8.x Mountain Lion
-	// 11.x.x  OS X 10.7.x Lion
-	// 10.x.x  OS X 10.6.x Snow Leopard
-	//  9.x.x  OS X 10.5.x Leopard
-	//  8.x.x  OS X 10.4.x Tiger
-	//  7.x.x  OS X 10.3.x Panther
-	//  6.x.x  OS X 10.2.x Jaguar
-	//  5.x    OS X 10.1.x Puma
-
 	str, err := GetString()
 	if err != nil {
 		return semver.Version{}, err
 	}
 
 	return semver.Make(str)
+}
+
+func GetHumanReadable() (string, error) {
+
+	versions := []string{
+		"",
+		"",
+		"",
+		"",
+		"",
+		"OS X 10.1.{patch} Puma",
+		"OS X 10.2.{patch} Jaguar",
+		"OS X 10.3.{patch} Panther",
+		"OS X 10.4.{patch} Tiger",
+		"OS X 10.5.{patch} Leopard",
+		"OS X 10.6.{patch} Snow Leopard",
+		"OS X 10.7.{patch} Lion",
+		"OS X 10.8.{patch} Mountain Lion",
+		"OS X 10.9.{patch} Mavericks",
+		"OS X 10.10.{patch} Yosemite",
+		"OS X 10.11.{patch} El Capitan",
+	}
+
+	version, err := GetSemanticVersion()
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Replace(versions[version.Major],
+		"{patch}",
+		strconv.FormatUint(version.Patch, 10),
+		1), nil
 }
