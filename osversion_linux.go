@@ -1,9 +1,8 @@
-// +build !android
+// +build linux
 
 package osversion
 
 import (
-	"C"
 	"errors"
 	"fmt"
 	"io/ioutil"

@@ -25,7 +25,8 @@ func TestHumanReadable(t *testing.T) {
 			t.Fatal("Error getting string")
 		}
 		reg := regexp.MustCompile("OS X 10\\..+")
-		if !reg.MatchString(str) {
+		reg2 := regexp.MustCompile("macOS 10\\..+")
+		if !reg.MatchString(str) && !reg2.MatchString(str) {
 			t.Fatalf("Improper human readable format: %s", str)
 		}
 	case "linux":
