@@ -38,7 +38,7 @@ func GetHumanReadable() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if version.Major < 4 || version.Major > 15 {
+	if version.Major < 4 || version.Major > 16 {
 		return fmt.Sprintf("Unknown OS X version: %s", version.String()), nil
 	}
 
@@ -61,4 +61,5 @@ var versions = []string{
 	"OS X 10.9.{patch} Mavericks",
 	"OS X 10.10.{patch} Yosemite",
 	"OS X 10.11.{patch} El Capitan",
+	"macOS 10.12.{patch} Sierra",
 }
