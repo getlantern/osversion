@@ -1,4 +1,4 @@
-// +build linux
+// +build !android
 
 package osversion
 
