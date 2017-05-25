@@ -1,23 +1,30 @@
 package osversion
 
 import (
-	"errors"
 	"fmt"
-	"syscall"
+	"os/exec"
+	"regexp"
+)
+
+var (
+	verRegex = regexp.MustCompile(`[0-9]+\.[0-9]+\.[0-9]+`)
 )
 
 func GetString() (string, error) {
-	dll, err := syscall.LoadDLL("kernel32.dll")
+	cmd := exec.Command("cmd", "ver")
+	_text, err := cmd.Output()
 	if err != nil {
-		return "", errors.New(fmt.Sprintf("Error loading kernel32.dll: %v", err))
+		return "", fmt.Errorf("Unable to run ver: %v", err)
 	}
-	p, err := dll.FindProc("GetVersion")
+	text := string(_text)
 	if err != nil {
-		return "", errors.New(fmt.Sprintf("Error finding GetVersion procedure: %v", err))
+		return "", fmt.Errorf("Unable to run ver.exe: %v", err)
 	}
-	// The error is always non-nil
-	v, _, _ := p.Call()
-	return fmt.Sprintf("%d.%d.%d", byte(v), byte(v>>8), uint16(v>>16)), nil
+	matches := verRegex.FindAllString(text, -1)
+	if len(matches) != 1 {
+		return "", fmt.Errorf("Version string not found: %v", text)
+	}
+	return matches[0], nil
 }
 
 func GetHumanReadable() (string, error) {
@@ -38,7 +45,7 @@ func GetHumanReadable() (string, error) {
 	if str, ok := versions[vstr]; ok {
 		return str, nil
 	} else {
-		return "", errors.New("Unknown Windows version")
+		return "", fmt.Errorf("Unknown Windows version: %v", vstr)
 	}
 }
 
@@ -82,6 +89,13 @@ var specificVersions = map[string]string{
 	"6.3.9200":   "Windows 8.1 / Windows Server 2012 R2",
 	"6.3.9600":   "Windows 8.1, Update 1",
 	"10.0.10240": "Windows 10 RTM",
+	"10.0.10586": "Windows 10 1511 / Windows Server 2016 Technical Preview 4",
+	"10.0.14393": "Windows 10 1607 / Windows Server 2016",
+	"10.0.15063": "Windows 10 1703",
+	"6.4.9841":   "Windows Server 2016 Technical Preview",
+	"10.0.10074": "Windows Server 2016 Technical Preview 2",
+	"10.0.10514": "Windows Server 2016 Technical Preview 3",
+	"10.0.14300": "Windows Server 2016 Technical Preview 5",
 }
 
 var versions = map[string]string{
