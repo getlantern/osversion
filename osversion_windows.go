@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	verRegex = regexp.MustCompile(`\[Version ([0-9]+\.[0-9]+\.[0-9]+)\]`)
+	verRegex = regexp.MustCompile(`[0-9]+\.[0-9]+\.[0-9]+`)
 )
 
 func GetString() (string, error) {
@@ -20,15 +20,11 @@ func GetString() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("Unable to run ver.exe: %v", err)
 	}
-	matches := verRegex.FindAllStringSubmatch(text, -1)
+	matches := verRegex.FindAllString(text, -1)
 	if len(matches) != 1 {
 		return "", fmt.Errorf("Version string not found: %v", text)
 	}
-	parts := matches[0]
-	if len(parts) != 2 {
-		return "", fmt.Errorf("Unexpected version string format: %v", parts[0])
-	}
-	return parts[1], nil
+	return matches[0], nil
 }
 
 func GetHumanReadable() (string, error) {
