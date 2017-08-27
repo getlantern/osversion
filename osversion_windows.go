@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 	"regexp"
+	"syscall"
 )
 
 var (
@@ -12,6 +13,9 @@ var (
 
 func GetString() (string, error) {
 	cmd := exec.Command("cmd", "ver")
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		HideWindow: true,
+	}
 	_text, err := cmd.Output()
 	if err != nil {
 		return "", fmt.Errorf("Unable to run ver: %v", err)
