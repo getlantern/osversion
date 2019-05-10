@@ -48,6 +48,6 @@ func TestHumanReadable(t *testing.T) {
 			t.Fatalf("Improper human readable format: %s", str)
 		}
 	default:
-		t.Fatal("Unsupported OS detected: %s", runtime.GOOS)
+		t.Fatalf("Unsupported OS detected: %s", runtime.GOOS)
 	}
 }
