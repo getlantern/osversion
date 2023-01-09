@@ -1,14 +1,18 @@
+//go:build !android
+
 package osversion
 
 import (
-	"github.com/blang/semver"
+	"fmt"
+
+	"github.com/shirou/gopsutil/v3/host"
 )
 
-func GetSemanticVersion() (semver.Version, error) {
-	str, err := GetString()
+func GetHumanReadable() (string, error) {
+	a, err := host.Info()
 	if err != nil {
-		return semver.Version{}, err
+		return "", fmt.Errorf("failed to get host info: %w", err)
 	}
-
-	return semver.Make(str)
+	return fmt.Sprintf("%s %s", a.Platform, a.PlatformVersion), nil
+	// For Android, you also need: (API X, OS Y)
 }
