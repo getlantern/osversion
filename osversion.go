@@ -14,5 +14,12 @@ func GetHumanReadable() (string, error) {
 		return "", fmt.Errorf("failed to get host info: %w", err)
 	}
 	return fmt.Sprintf("%s %s", a.Platform, a.PlatformVersion), nil
-	// For Android, you also need: (API X, OS Y)
+}
+
+func GetSemanticVersion() (string, error) {
+	a, err := host.Info()
+	if err != nil {
+		return "", fmt.Errorf("failed to get host info: %w", err)
+	}
+	return a.PlatformVersion, nil
 }

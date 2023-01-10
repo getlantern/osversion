@@ -45,3 +45,11 @@ func GetHumanReadable() (string, error) {
 	return fmt.Sprintf("Android (API %d | OS %d | Arch %s)",
 		apiVersion, release, a.KernelArch), nil
 }
+
+func GetSemanticVersion() (string, error) {
+	release, err := getAndroidOSVersion()
+	if err != nil {
+		return "", fmt.Errorf("failed to get Android OS version: %w", err)
+	}
+	return fmt.Sprintf("%d", release), nil
+}
