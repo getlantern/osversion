@@ -73,4 +73,5 @@ var versions = []string{
 	"macOS 12.{decimal} Monterey",
 	"macOS 13.{decimal} Ventura",
 	"macOS 14.{decimal} Sonoma",
+	"macOS 15.{decimal} Sequoia",
 }
