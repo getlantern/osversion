@@ -38,7 +38,7 @@ func GetHumanReadable() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if version.Major < 4 || version.Major > 23 {
+	if version.Major < 4 || version.Major > 24 {
 		return fmt.Sprintf("Unknown OS X version: %s", version.String()), nil
 	}
 
